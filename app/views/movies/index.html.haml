@@ -4,9 +4,9 @@
 %table#movies
   %thead
     %tr
-      %th {:class => th_class("title")} = sortlist "title", "Movie Title", @selected_ratings, "title_header"
+      %th= link_to "Movie Title", request.parameters.merge({:sort => "title ASC"})
       %th Rating
-      %th {:class => th_class("release_date")}= sortlist "release_date", "Release Date", @selected_ratings, "release_date_header"
+      %th= link_to "Release Date", request.parameters.merge({:sort => "title ASC"})
       %th More Info
   %tbody
     - @movies.each do |movie|
