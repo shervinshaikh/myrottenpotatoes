@@ -9,9 +9,11 @@ class MoviesController < ApplicationController
       @release_date_header = "hilite"
     end
     @allratings = Movie.getratings
-    if params[:ratings_] != nil
+    @selected_ratings = @allratings
+    if params[:ratings] != nil
       @movies = nil
-      params[:ratings_].keys.each do |rate|
+      @selected_ratings = params[:ratings].keys
+      params[:ratings].keys.each do |rate|
         mov = Movie.find(:all, :conditions => {:rating => rate} )
         if @movies == nil
           @movies = mov
