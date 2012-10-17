@@ -8,7 +8,7 @@ class MoviesController < ApplicationController
     elsif params[:sort] == "release_date ASC"
       @release_date_header = "hilite"
     end
-    @allratings = ['G', 'PG'] #Movie.find(:rating)
+    @allratings = Movie.getratings
   end
 
   def show
