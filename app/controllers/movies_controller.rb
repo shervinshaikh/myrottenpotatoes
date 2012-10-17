@@ -9,6 +9,17 @@ class MoviesController < ApplicationController
       @release_date_header = "hilite"
     end
     @allratings = Movie.getratings
+    if params[:ratings_] != nil
+      @movies = nil
+      params[:ratings_].keys.each do |rate|
+        mov = Movie.find(:all, :conditions => {:rating => rate} )
+        if @movies == nil
+          @movies = mov
+        else
+          @movies += mov
+        end
+      end
+    end
   end
 
   def show
