@@ -2,7 +2,7 @@ class MoviesController < ApplicationController
   
   def index
     @movies = Movie.find(:all, :order => params[:sort])
-    @all_ratings = Movie.find(:rating)
+    @allratings = ['G', 'PG'] #Movie.find(:rating)
   end
 
   def show
