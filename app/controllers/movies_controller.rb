@@ -1,7 +1,8 @@
 class MoviesController < ApplicationController
   
   def index
-    @movies = Movie.find(:all, :order => params[:sort])
+#@movies = Movie.all
+#@movies = Movie.find(:all, :order => params[:sort])
     @title_header, @release_header = nil
     if params[:sort] == "title ASC"
       @title_header = "hilite"
@@ -10,17 +11,24 @@ class MoviesController < ApplicationController
     end
     @allratings = Movie.getratings
     @selected_ratings = @allratings
+#    if params[:ratings] != nil && params[:sort] == nil
+#      @movies = nil
+#      @selected_ratings = params[:ratings].keys
+#      params[:ratings].keys.each do |rate|
+#        mov = Movie.find(:all, :conditions => {:rating => rate} )
+#        if @movies == nil
+#          @movies = mov
+#        else
+#          @movies += mov
+#        end
+#      end
+#   end
     if params[:ratings] != nil
-      @movies = nil
+      @movies = Movie.find_all_by_rating(params[:ratings].keys, :order => params[:sort])
       @selected_ratings = params[:ratings].keys
-      params[:ratings].keys.each do |rate|
-        mov = Movie.find(:all, :conditions => {:rating => rate} )
-        if @movies == nil
-          @movies = mov
-        else
-          @movies += mov
-        end
-      end
+#    end
+    elsif
+      @movies = Movie.find(:all, :order => params[:sort])
     end
   end
 
