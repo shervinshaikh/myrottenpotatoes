@@ -6,6 +6,7 @@ class Movie < ActiveRecord::Base
 #      array << t.rating
 #    end
 #    return array
-    return ['G', 'PG', 'PG-13', 'R']
+    @selected_ratings = ['G', 'PG', 'PG-13', 'R']
+    return @selected_ratings
   end
 end

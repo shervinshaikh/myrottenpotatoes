@@ -10,7 +10,10 @@ class MoviesController < ApplicationController
       @release_date_header = "hilite"
     end
     @allratings = Movie.getratings
-    @selected_ratings = @allratings
+    if @selected_ratings == nil
+      @selected_ratings = @allratings
+    end
+
 #    if params[:ratings] != nil && params[:sort] == nil
 #      @movies = nil
 #      @selected_ratings = params[:ratings].keys
@@ -23,18 +26,32 @@ class MoviesController < ApplicationController
 #        end
 #      end
 #   end
-    if params[:ratings] != nil
-      @movies = Movie.find_all_by_rating(params[:ratings].keys, :order => params[:sort])
-      @selected_ratings = params[:ratings].keys
+
+#    if params[:ratings] != nil
+#      @movies = Movie.find_all_by_rating(params[:ratings].keys, :order => params[:sort])
+#      @selected_ratings = params[:ratings].keys
+##    end
+#    else
+#      @movies = Movie.find_all_by_rating(@selected_ratings, :order => params[:sort])
 #    end
-    elsif
-      @movies = Movie.find(:all, :order => params[:sort])
+    
+    @selected_ratings = @allratings
+    if params[:ratings] != nil
+      session[:ratings] = params[:ratings].keys
     end
+    @selected_ratings = session[:ratings] if session[:rating] != nil
+    
+    @order = params[:sort]
+    session[:ord] = params[:sort] if session[:ord] != nil
+    @order = session[:ord] if session[:ord] != nil
+    
+    
+    @movies = Movie.find_all_by_rating(@selected_ratings, :order => @order)
   end
 
   def show
     id = params[:id] # retrieve movie ID from URI route
-    @movie = Movie.find(id) # look up movie by unique ID
+    @movies = Movie.find(id) # look up movie by unique ID
     # will render app/views/movies/show.<extension> by default
   end
 
