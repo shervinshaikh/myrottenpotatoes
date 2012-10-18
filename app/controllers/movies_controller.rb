@@ -11,25 +11,21 @@ class MoviesController < ApplicationController
     end
     @allratings = Movie.getratings
     @selected_ratings = @allratings
-#    if params[:ratings] != nil && params[:sort] == nil
-#      @movies = nil
-#      @selected_ratings = params[:ratings].keys
-#      params[:ratings].keys.each do |rate|
-#        mov = Movie.find(:all, :conditions => {:rating => rate} )
-#        if @movies == nil
-#          @movies = mov
-#        else
-#          @movies += mov
-#        end
-#      end
-#   end
-    if params[:ratings] != nil
-      @movies = Movie.find_all_by_rating(params[:ratings].keys, :order => params[:sort])
-      @selected_ratings = params[:ratings].keys
+
+
+    session[:ratings] = params[:ratings].keys if params[:ratings] != nil
+    session[:sort] = params[:sort] if params[:sort] != nil | ""
+    @selected_ratings = session[:ratings]
+    @movies = Movie.find_all_by_rating(session[:ratings], :order => session[:sort])
+
+#    if params[:ratings] != nil
+#      @movies = Movie.find_all_by_rating(params[:ratings].keys, :order => params[:sort])
+#      session[:ratings] = params[:ratings].keys
+#      @selected_ratings = session[:ratings]
+#      session[:sort] = params[:sort]
+#    elsif
+#      @movies = Movie.find_all_by_rating(session[:ratings], :order => session[:sort])
 #    end
-    elsif
-      @movies = Movie.find(:all, :order => params[:sort])
-    end
   end
 
   def show
