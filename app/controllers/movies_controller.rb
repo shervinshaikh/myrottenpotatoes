@@ -13,9 +13,9 @@ class MoviesController < ApplicationController
     @selected_ratings = @allratings
 
 
-    session[:ratings] = params[:ratings].keys if params[:ratings] != nil
+    flash[:ratings] = params[:ratings].keys if params[:ratings] != nil
 #session[:sort] = params[:sort] if params[:sort] != nil || params[:sort] != ""
-    @selected_ratings = session[:ratings]
+    @selected_ratings = flash[:ratings] if flash[:ratings] != nil
     @movies = Movie.find_all_by_rating(@selected_ratings, :order => params[:sort])
 
 #    if params[:ratings] != nil
