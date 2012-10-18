@@ -14,7 +14,7 @@ class MoviesController < ApplicationController
 
 
     session[:ratings] = params[:ratings].keys if params[:ratings] != nil
-    session[:sort] = params[:sort] if params[:sort] != nil | ""
+    session[:sort] = params[:sort] if params[:sort] != nil || params[:sort] != ""
     @selected_ratings = session[:ratings]
     @movies = Movie.find_all_by_rating(session[:ratings], :order => session[:sort])
 
