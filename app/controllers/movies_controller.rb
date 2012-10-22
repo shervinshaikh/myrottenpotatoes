@@ -10,7 +10,7 @@ class MoviesController < ApplicationController
       if session[:sort]
         sort = session[:sort]
         session.delete(:sort)
-        rediect = true
+        redirect = true
       end
     end
 
