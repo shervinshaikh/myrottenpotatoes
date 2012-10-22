@@ -4,11 +4,6 @@ class MoviesController < ApplicationController
     @title_header, @release_header = nil
     @allratings = Movie.getratings
     @selected_ratings = @allratings
-    if params[:sort] == "title ASC"
-      @title_header = "hilite"
-    elsif params[:sort] == "release_date ASC"
-      @release_date_header = "hilite"
-    end
 
 #flash[:ratings] = params[:ratings].keys if params[:ratings] != nil
 ##session[:sort] = params[:sort] if params[:sort] != nil || params[:sort] != ""
@@ -19,9 +14,8 @@ class MoviesController < ApplicationController
       if session[:sort]
         sort = session[:sort]
         session.delete(:sort)
-        redirect_to(:action => "index", :sort => sort)
+        rediect = true
       else
-        redirect_to(:action => "index")
       end
     end
 
@@ -30,13 +24,10 @@ class MoviesController < ApplicationController
     elsif session[:sort]
       sort = session[:sort]
       session.delete(:sort)
+      redirect = true
       if session[:ratings]
         @ratings = session[:ratings]
         session.delete(:ratings)
-        redirect_to(:action => "index", :sort => sort, :ratings => @ratings)
-      else
-        redirect_to(:action => "index", :sort => sort)
-      end
     end
 
     if params[:ratings]
@@ -44,25 +35,37 @@ class MoviesController < ApplicationController
     elsif session[:ratings]
       @ratings = session[:ratings]
       session.delete(:ratings)
+      redirect = true
       if session[:sort]
         sort = session[:sort]
         session.delete(:sort)
+    end
+    
+    if redirect
+      if @ratings && sort
         redirect_to(:action => "index", :sort => sort, :ratings => @ratings)
-      else
+      elsif @ratings
         redirect_to(:action => "index", :ratings => @ratings)
+      elsif sort
+        redirect_to(:action => "index", :sort => sort)
+      else
+        redirect_to(:action => "index")
       end
     end
 
     @selected_ratings = @ratings.keys if @ratings
 
-    if sort
-      @movies = Movie.find_all_by_rating(@selected_ratings, :order => sort)
-    elsif
-      @movies = Movie.find_all_by_rating(@selected_ratings)
+    if sort == "title ASC"
+      @title_header = "hilite"
+    elsif sort == "release_date ASC"
+      @release_date_header = "hilite"
     end
+
+    @movies = Movie.find_all_by_rating(@selected_ratings)
+    @movies = Movie.find_all_by_rating(@selected_ratings, :order => sort) if sort
     
-    session[:sort] = sort if params[:sort]
-    session[:ratings] = @ratings if params[:ratings]
+    session[:sort] = sort if sort
+    session[:ratings] = @ratings if @ratings
 
   end
 
