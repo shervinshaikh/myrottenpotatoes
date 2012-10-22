@@ -5,17 +5,12 @@ class MoviesController < ApplicationController
     @allratings = Movie.getratings
     @selected_ratings = @allratings
 
-#flash[:ratings] = params[:ratings].keys if params[:ratings] != nil
-##session[:sort] = params[:sort] if params[:sort] != nil || params[:sort] != ""
-#@selected_ratings = flash[:ratings] if flash[:ratings] != nil
-
     if params[:commit]
       session.delete(:ratings)
       if session[:sort]
         sort = session[:sort]
         session.delete(:sort)
         rediect = true
-      else
       end
     end
 
@@ -28,6 +23,7 @@ class MoviesController < ApplicationController
       if session[:ratings]
         @ratings = session[:ratings]
         session.delete(:ratings)
+      end
     end
 
     if params[:ratings]
@@ -39,6 +35,7 @@ class MoviesController < ApplicationController
       if session[:sort]
         sort = session[:sort]
         session.delete(:sort)
+      end
     end
     
     if redirect
